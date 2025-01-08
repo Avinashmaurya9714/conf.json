@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Vulnerability Demo</title>
+</head>
+<body>
+    <h1>Welcome to XSS Vulnerability Demo</h1>
+    <p>Enter your message below:</p>
+
+    <!-- Vulnerable input field -->
+    <form action="" method="GET">
+        <input type="text" name="message" placeholder="Enter alert message">
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Vulnerable output -->
+    <div id="output"></div>
+
+    <script>
+        // Get the 'message' parameter from the URL and inject it into the page
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+
+        // If the 'message' parameter exists, display it inside the page, causing an XSS vulnerability
+        if (message) {
+            // This is an XSS vulnerability: we're directly inserting user input without sanitization
+            document.getElementById('output').innerHTML = message;
+
+            // Send an alert using the injected message
+            alert("Alert message: " + message);
+        }
+    </script>
+</body>
+</html>
